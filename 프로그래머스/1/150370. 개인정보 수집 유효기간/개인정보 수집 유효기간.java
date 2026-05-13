@@ -7,14 +7,11 @@ class Solution {
     public static int changeDateFormat(String date) {
         String[] splitedDate = date.split("\\.");
         
-        int totalDays = 0;
+        int year = Integer.parseInt(splitedDate[0].substring(2));
+        int month = Integer.parseInt(splitedDate[1]);
+        int day = Integer.parseInt(splitedDate[2]);
         
-        // 2000 <= year <= 2022
-        totalDays += Integer.parseInt(splitedDate[0].substring(2)) * 12 * 28;
-        totalDays += Integer.parseInt(splitedDate[1]) * 28;
-        totalDays += Integer.parseInt(splitedDate[2]);
-        
-        return totalDays;
+        return (year * 12 * 28) + (month * 28) + day;
     }
     
     public static int calcEndDate(String privacy) {
@@ -32,8 +29,7 @@ class Solution {
         for (String term : terms) {
             String[] splitedTerm = term.split(" ");
             
-            int termsToDays = Integer.parseInt(splitedTerm[1]) * 28;
-            termsMap.put(splitedTerm[0], termsToDays);
+            termsMap.put(splitedTerm[0], Integer.parseInt(splitedTerm[1]) * 28);
         }
         
         for (int i = 0; i < privacies.length; ++i) {

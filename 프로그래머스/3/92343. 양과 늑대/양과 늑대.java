@@ -1,55 +1,37 @@
 import java.util.*;
 
 class Solution {
-    
-    List<Integer>[] graph;
-    int[] info;
-    int answer = 0;
+    boolean[] visited;
+    int maxSheep = 0;
     
     public int solution(int[] info, int[][] edges) {
-        int n = info.length;
-        this.info = info;
+        visited = new boolean[info.length];
+        visited[0] = true;
         
-        graph = new ArrayList[n];
-        for (int i = 0; i < n; ++i) {
-            graph[i] = new ArrayList<>();
-        }
-        
-        for (int i = 0; i < edges.length; ++i) {
-            graph[edges[i][0]].add(edges[i][1]);
-        }
-        
-        List<Integer> nextNodes = new ArrayList<>();
-        nextNodes.add(0);
-
-        dfs(0, 0, 0, nextNodes);
-
-        return answer;
+        dfs(info, edges, 1, 0);
+        return maxSheep;
     }
     
-    private void dfs(int now, int sheep, int wolf, List<Integer> nextNodes) {
-        if (info[now] == 0) {
-            sheep++;
-        } else {
-            wolf++;
-        }
-
-        if (wolf >= sheep) {
-            return;
-        }
-
-        answer = Math.max(answer, sheep);
-
-        List<Integer> candidates = new ArrayList<>(nextNodes);
-
-        candidates.remove(Integer.valueOf(now));
-
-        for (int child : graph[now]) {
-            candidates.add(child);
-        }
-
-        for (int next : candidates) {
-            dfs(next, sheep, wolf, candidates);
+    void dfs(int[] info, int[][] edges, int sheep, int wolf) {
+        if (wolf >= sheep) return;
+        
+        maxSheep = Math.max(maxSheep, sheep);
+        
+        for (int[] edge : edges) {
+            int parent = edge[0];
+            int child = edge[1];
+            
+            if (visited[parent] && !visited[child]) {
+                visited[child] = true;
+                
+                if (info[child] == 0) {
+                    dfs(info, edges, sheep + 1, wolf);
+                } else {
+                    dfs(info, edges, sheep, wolf + 1);
+                }
+                
+                visited[child] = false;
+            }
         }
     }
 }

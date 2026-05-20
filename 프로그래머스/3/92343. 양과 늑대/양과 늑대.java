@@ -1,18 +1,18 @@
-import java.util.*;
-
 class Solution {
+    
+    int maxSheep;
     boolean[] visited;
-    int maxSheep = 0;
     
     public int solution(int[] info, int[][] edges) {
         visited = new boolean[info.length];
         visited[0] = true;
         
         dfs(info, edges, 1, 0);
+        
         return maxSheep;
     }
     
-    void dfs(int[] info, int[][] edges, int sheep, int wolf) {
+    private void dfs(int[] info, int[][] edges, int sheep, int wolf) {
         if (wolf >= sheep) return;
         
         maxSheep = Math.max(maxSheep, sheep);
@@ -23,15 +23,12 @@ class Solution {
             
             if (visited[parent] && !visited[child]) {
                 visited[child] = true;
-                
-                if (info[child] == 0) {
-                    dfs(info, edges, sheep + 1, wolf);
-                } else {
-                    dfs(info, edges, sheep, wolf + 1);
-                }
-                
+                if (info[child] == 0) dfs(info, edges, sheep + 1, wolf);
+                else dfs(info, edges, sheep, wolf + 1);
                 visited[child] = false;
             }
         }
+        
+        
     }
 }

@@ -2,35 +2,37 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        Queue<Integer> q = getRemainQueue(progresses, speeds);
-        List<Integer> res = new ArrayList<>();
+        Queue<Integer> q = getRemainDates(progresses, speeds);
+        List<Integer> ans = new ArrayList<>();
         
+        int cur = q.poll();
         int cnt = 1;
-        int remain = q.poll();
         while (!q.isEmpty()) {
-            if (q.peek() <= remain) {
-                q.poll();
+            if (q.peek() <= cur) {
                 cnt++;
-            } else {
-                res.add(cnt);
-                remain = q.poll();
+                q.poll();
+            }
+            else {
+                ans.add(cnt);
+                cur = q.poll();
                 cnt = 1;
             }
         }
-        res.add(cnt);
+        ans.add(cnt);
         
-        return res.stream()
-            .mapToInt(Integer::intValue)
-            .toArray();
+        return ans.stream().mapToInt(Integer::intValue).toArray();
     }
     
-    private Queue<Integer> getRemainQueue(int[] progresses, int[] speeds) {
-        Queue<Integer> q = new ArrayDeque<>();
+    private Queue<Integer> getRemainDates(int[] progresses, int[] speeds) {
+        Queue<Integer> remainDates = new ArrayDeque<>();
         
         for (int i = 0; i < progresses.length; ++i) {
-            int remain = (100 - progresses[i] + speeds[i] - 1) / speeds[i]; 
-            q.offer(remain);
+            int remain = 100 - progresses[i];
+            int need
+                = (remain % speeds[i] == 0) ? remain / speeds[i] : remain / speeds[i] + 1;
+            
+            remainDates.offer(need);
         }
-        return q;
+        return remainDates;
     }
 }

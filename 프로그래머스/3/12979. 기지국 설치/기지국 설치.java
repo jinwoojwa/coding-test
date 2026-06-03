@@ -1,35 +1,35 @@
 import java.util.*;
 
 class Solution {
+    
+    private int dist;
+    
     public int solution(int n, int[] stations, int w) {
-        List<int[]> remainApt = new ArrayList<>();
-        int dist = 2 * w + 1;
+        dist = 2 * w + 1;
         
         int apt = 1;
         int stApt = 0, enApt = 0;
+        int answer = 0;
         
         for (int s : stations) {
             stApt = s - w;
             enApt = s + w;
             
             if (apt < stApt) {
-                remainApt.add(new int[]{apt, stApt - 1});
+                answer += calNeedStationNum(apt, stApt - 1);
                 apt = enApt + 1;
             }
             else apt = enApt + 1;
         }
         
-        if (enApt < n) remainApt.add(new int[]{enApt + 1, n});
-        
-        int answer = 0;
-        for (var remain : remainApt) {
-            int aptCnt = remain[1] - remain[0] + 1;
-            int need = (int) Math.ceil((double) aptCnt / dist);
-            
-            answer += need;
-        }
+        if (enApt < n) answer += calNeedStationNum(enApt + 1, n);
 
         return answer;
+    }
+    
+    private int calNeedStationNum(int start, int end) {
+        int aptCnt = end - start + 1;
+        return (int) Math.ceil((double) aptCnt / dist);
     }
 }
 

@@ -10,18 +10,18 @@ class Solution {
         int x = 5, y = 5;
         
         for (int i = 0; i < dirs.length(); ++i) {
-            int dir = getDir(dirs.charAt(i));
-            int reverseDir = getDir(reverseDirection(dirs.charAt(i)));
+            int moveDir = getDir(dirs.charAt(i));
+            int reverseDir = (moveDir + 2) % 4;
             
-            int nx = x + dx[dir];
-            int ny = y + dy[dir];
+            int nx = x + dx[moveDir];
+            int ny = y + dy[moveDir];
             
             if (nx < 0 || ny < 0 || nx > 10 || ny > 10) continue;
             
             // 아직 방문 X
-            if (!visited[nx][ny][dir]) answer++;
+            if (!visited[nx][ny][moveDir]) answer++;
             
-            visited[nx][ny][dir] = true;
+            visited[nx][ny][moveDir] = true;
             visited[x][y][reverseDir] = true;
             x = nx; y = ny;
         }
@@ -35,16 +35,6 @@ class Solution {
                 case 'L' -> 2;
                 case 'U' -> 3;
                 default -> -1;
-        };
-    }
-    
-    private char reverseDirection(char c) {
-        return switch (c) {
-                case 'R' -> 'L';
-                case 'D' -> 'U';
-                case 'L' -> 'R';
-                case 'U' -> 'D';
-                default -> 'X';
         };
     }
 }

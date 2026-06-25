@@ -19,10 +19,6 @@ class Solution {
             pq.offer(new int[]{food_times[idx], idx + 1});
         }
         
-        // pq에서 하나씩 뽑아서 현재 남은 k가 뽑은 음식을 다먹을 때까지 걸리는 시간보다
-        // 큰 경우   ->  다 먹고 k 갱신
-        // 작은 경우  ->  계산
-        
         long prev = 0;
         long remain = food_times.length;
         
